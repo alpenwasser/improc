@@ -18,6 +18,9 @@ my $desired_h;
 my @source_files;
 my @trim; # Trim factors: (top, right, bottom, left)
 
+# Based on a square logo 1/10 the width of a 1.5/1 image:
+my $logo_area_ratio = 0.0225;
+
 
 my $arg_parser = Getopt::Long::Parser->new();
 $arg_parser->getoptions(
@@ -130,51 +133,6 @@ for my $img_file (@img_files)
 	GD::Image->trueColor(1);
 
 
-	my $gd_logo;
-	my $output_logo;
-	my $logo_w;
-	my $logo_h;
-	my $logo_src_w;
-	my $logo_src_h;
-	my $logo_ratio;
-	if ($logo)
-	{
-		# Grab logo if specified,  adjust in size to
-		# overall image.
-
-		$gd_logo	   = GD::Image->new($logo) or die;
-		my $transparent    = $gd_logo->colorAllocateAlpha(0,0,0,127);
-
-		($logo_src_w, $logo_src_h) = $gd_logo->getBounds();
-		$logo_ratio = $logo_src_w / $logo_src_h;
-		$logo_w = $target_w / 10;
-		$logo_h = $logo_w / $logo_ratio;
-
-		$gd_logo->interlaced('true');
-		$gd_logo->alphaBlending(0);
-		$gd_logo->saveAlpha(1);
-		$gd_logo->transparent($transparent);
-
-		$output_logo = GD::Image->new($logo_w, $logo_w);
-		$output_logo->interlaced('true');
-		$output_logo->alphaBlending(0);
-		$output_logo->saveAlpha(1);
-		$output_logo->transparent($transparent);
-
-		$output_logo->copyResampled(
-			$gd_logo,
-			0,
-			0,
-			0,
-			0,
-			$logo_w,
-			$logo_h,
-			$logo_src_w,
-			$logo_src_h
-		);
-	}
-
-
 	my $gd_source = GD::Image->new($img_file) 
 		or die("Fatal error, could not convert: " . $img_file);
 	my ($source_w, $source_h) = $gd_source->getBounds();
@@ -205,6 +163,58 @@ for my $img_file (@img_files)
 	{
 		# ... or vice versa.
 		$target_h = $target_w / $ratio;
+	}
+
+
+	my $gd_logo;
+	my $output_logo;
+	my $logo_w;
+	my $logo_h;
+	my $logo_src_w;
+	my $logo_src_h;
+	my $logo_ratio;
+	if ($logo)
+	{
+		# Grab logo if specified,  adjust in size to
+		# overall image.
+
+		$gd_logo	   = GD::Image->new($logo) or die;
+		my $transparent    = $gd_logo->colorAllocateAlpha(0,0,0,127);
+
+		($logo_src_w, $logo_src_h) = $gd_logo->getBounds();
+		$logo_ratio = $logo_src_w / $logo_src_h;
+
+		$logo_w = sqrt($target_w 
+			* $target_h 
+			* $logo_area_ratio 
+			* $logo_ratio);
+		$logo_h = $logo_w / $logo_ratio;
+
+		#$logo_w = $target_w / 10;
+		#$logo_h = $logo_w / $logo_ratio;
+
+		$gd_logo->interlaced('true');
+		$gd_logo->alphaBlending(0);
+		$gd_logo->saveAlpha(1);
+		$gd_logo->transparent($transparent);
+
+		$output_logo = GD::Image->new($logo_w, $logo_w);
+		$output_logo->interlaced('true');
+		$output_logo->alphaBlending(0);
+		$output_logo->saveAlpha(1);
+		$output_logo->transparent($transparent);
+
+		$output_logo->copyResampled(
+			$gd_logo,
+			0,
+			0,
+			0,
+			0,
+			$logo_w,
+			$logo_h,
+			$logo_src_w,
+			$logo_src_h
+		);
 	}
 
 
