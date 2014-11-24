@@ -13,16 +13,16 @@ my $PADDING = 20;
 
 
 my $logo;
-my $target_w;
-my $target_h;
+my $desired_w;
+my $desired_h;
 my @source_files;
 
 
 my $arg_parser = Getopt::Long::Parser->new();
 $arg_parser->getoptions(
 	"logo|l=s"     => \$logo,
-	"width|w=i"    => \$target_w,
-	"height|h=i"   => \$target_h,
+	"width|w=i"    => \$desired_w,
+	"height|h=i"   => \$desired_h,
 	"files|f=s{,}" => \@source_files
 ) or die ("Insufficient arguments");
 
@@ -34,7 +34,6 @@ mkdir("output",0755) unless (-d "output");
 
 
 my $counter     = 0;
-#my @suffix_list = (".jpeg",".png",".gif",".jpg");
 my @suffix_list = (".jpeg",".png",".jpg");
 my @img_files;
 
@@ -64,10 +63,12 @@ my $image_count = scalar(@img_files);
 for my $img_file (@img_files)
 {
 	my ($filename,$path,$extension) = fileparse($img_file,@suffix_list);
+	my $target_w;
+	my $target_h;
 
-	# TODO: improve filename processing
-	#       recognise image type, adjust output filetype accordingly
-	#       refactor code
+	$target_w = $desired_w unless (!$desired_w);
+	$target_h = $desired_h unless (!$desired_h);
+
 
 	++$counter;
 	my $length = length $image_count;
