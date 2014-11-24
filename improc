@@ -20,6 +20,7 @@ my @trim; # Trim factors: (top, right, bottom, left)
 #       add capability to specify output file format
 #       add capability to specify logo size
 #       add capability to specify logo placement
+#       overwrite flag
 
 
 # Based on a square logo 1/10 the width of a 1.5/1 image:
