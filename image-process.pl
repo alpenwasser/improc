@@ -30,12 +30,41 @@ $arg_parser->getoptions(
 die("No image files specified.") unless (@source_files);
 
 
-my $image_count = scalar(@source_files);
+mkdir("output",0755) unless (-d "output");
+
+
 my $counter     = 0;
+#my @suffix_list = (".jpeg",".png",".gif",".jpg");
+my @suffix_list = (".jpeg",".png",".jpg");
+my @img_files;
 
 
+# Find   directories  in   input,  check   them  for   image
+# files. Does not work recursively.
 for my $img_file (@source_files)
 {
+	if (-d $img_file)
+	{
+		for my $current_extension (@suffix_list)
+		{
+			while (<$img_file/*$current_extension>)
+			{
+				push @img_files, $_;
+			}
+		}
+	}
+	else
+	{
+		push @img_files, $img_file;
+	}
+}
+
+my $image_count = scalar(@img_files);
+
+for my $img_file (@img_files)
+{
+	my ($filename,$path,$extension) = fileparse($img_file,@suffix_list);
+
 	# TODO: improve filename processing
 	#       recognise image type, adjust output filetype accordingly
 	#       refactor code
@@ -69,7 +98,7 @@ for my $img_file (@source_files)
 	}
 
 
-	my $gd_source = GD::Image->new($img_file) or die;
+	my $gd_source = GD::Image->new($img_file) or die("Fatal error, could not convert: " . $img_file);
 	my ($source_w, $source_h) = $gd_source->getBounds();
 
 
@@ -137,9 +166,27 @@ for my $img_file (@source_files)
 		);
 	}
 
+	if (-f "output/" . $filename . $extension)
+	{
+		my $duplicate_counter = 1;
+		my $new_filename = $filename . "_" . $duplicate_counter;
+		while (-f "output/" . $new_filename . $extension)
+		{
+			++$duplicate_counter;
+			$new_filename = $filename . "_" . $duplicate_counter;
+		}
+		$filename = $new_filename;
+	}
 
-	open(GD, ">output/$img_file") or die;
+	open(GD, ">output/" . $filename . $extension) or die;
 	binmode GD;
-	print GD $output_file->jpeg(80);
+	if ($extension eq ".jpeg" | $extension eq ".jpg")
+	{
+		print GD $output_file->jpeg(80);
+	}
+	elsif ($extension eq ".png")
+	{
+		print GD $output_file->png;
+	}
 	close GD;
 }
