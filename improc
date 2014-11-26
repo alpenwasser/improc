@@ -15,7 +15,6 @@ use Getopt::Long;
 # add capability to specify logo placement
 
 
-
 #-------------------------------------------------------------------------------
 # GLOBAL VARIABLES
 #-------------------------------------------------------------------------------
@@ -40,9 +39,6 @@ my $OVERWRITE = 0;
 
 sub get_input_args
 {
-	# Get input from command line.
-	
-
 	my $arg_parser = Getopt::Long::Parser->new();
 	$arg_parser->getoptions(
 		"logo|l=s"     => \$LOGO,
@@ -55,8 +51,6 @@ sub get_input_args
 
 	die("No image files specified.") unless (@SOURCE_FILES);
 }
-
-
 
 
 sub validate_trim_factors
@@ -268,7 +262,7 @@ sub handle_overwrite
 	return $filename if ($overwrite);
 
         # Prevent  overwriting  of  existing  files,  rename
-        # current file if necessary. Numbered sequentally.
+        # current file if necessary. Numbered sequentially.
 	if (-f "output/" . $filename . $extension)
 	{
 		my $duplicate_counter = 1;
