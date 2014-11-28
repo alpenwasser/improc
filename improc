@@ -290,13 +290,18 @@ sub write_output_file
 	# Write to file.
 	open(GD, ">output/" . $filename . $extension) or die;
 	binmode GD;
-	if ($extension eq ".jpeg" | $extension eq ".jpg")
+	if ($extension eq ".jpeg" or $extension eq ".jpg")
 	{
 		print GD ${ $output_file_ref }->jpeg(80);
 	}
 	elsif ($extension eq ".png")
 	{
 		print GD ${ $output_file_ref }->png;
+	}
+	elsif ($extension eq ".gif")
+	{
+		# TODO: Get transparency to work in gifs.
+		print GD ${ $output_file_ref }->gif;
 	}
 	close GD;
 }
