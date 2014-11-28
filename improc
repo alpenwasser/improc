@@ -10,7 +10,6 @@ use Getopt::Long;
 
 
 # TODO:
-# add capability to specify output file format
 # add capability to specify logo size
 # add capability to specify logo placement
 
@@ -32,6 +31,9 @@ my $LOGO;
 
 my $OVERWRITE = 0;
 
+my $OUTPUT_FORMAT; # NOTE: Transparent areas from png files will be converted
+                   #       to black when converting to jpeg.
+
 
 #-------------------------------------------------------------------------------
 # FUNCTIONS
@@ -41,12 +43,13 @@ sub get_input_args
 {
 	my $arg_parser = Getopt::Long::Parser->new();
 	$arg_parser->getoptions(
-		"logo|l=s"     => \$LOGO,
-		"width|w=i"    => \$DESIRED_W,
-		"height|h=i"   => \$DESIRED_H,
-		"files|f=s{,}" => \@SOURCE_FILES,
-		"trim|t=s{,}"  => \@TRIM,
-		"overwrite|o!" => \$OVERWRITE
+		"logo|l=s"           => \$LOGO,
+		"width|w=i"          => \$DESIRED_W,
+		"height|h=i"         => \$DESIRED_H,
+		"files|f=s{,}"       => \@SOURCE_FILES,
+		"trim|t=s{,}"        => \@TRIM,
+		"overwrite|o!"       => \$OVERWRITE,
+		"output_format|of=s" => \$OUTPUT_FORMAT
 	) or die ("Insufficient arguments");
 
 	die("No image files specified.") unless (@SOURCE_FILES);
@@ -390,6 +393,7 @@ sub process_images
 	my $logo            = shift;
 	my $logo_area_ratio = shift;
 	my $overwrite       = shift;
+	my $output_format   = shift;
 
 	my $counter         = 0;
 
@@ -441,6 +445,7 @@ sub process_images
 
 		my ($filename,$path,$extension) 
 			= fileparse($img_file,@{ $suffix_list_ref });
+		$extension = "." . $output_format if ($output_format);
 		$filename = handle_overwrite($filename, $extension, $overwrite);
 		write_output_file($filename, $extension, \$output_file);
 	}
@@ -467,5 +472,6 @@ process_images(
 	\@TRIM,
 	$LOGO,
 	$LOGO_AREA_RATIO,
-	$OVERWRITE
+	$OVERWRITE,
+	$OUTPUT_FORMAT
 );
