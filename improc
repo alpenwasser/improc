@@ -288,22 +288,39 @@ sub write_output_file
 	my $output_file_ref = shift;
 
 	# Write to file.
-	open(GD, ">output/" . $filename . $extension) or die;
-	binmode GD;
 	if ($extension eq ".jpeg" or $extension eq ".jpg")
 	{
+		open(GD, ">output/" . $filename . $extension) 
+			or die("Could not open file: output/" 
+				. $filename . $extension);
+		binmode GD;
 		print GD ${ $output_file_ref }->jpeg(80);
+		close GD;
 	}
 	elsif ($extension eq ".png")
 	{
+		open(GD, ">output/" . $filename . $extension)
+			or die("Could not open file: output/" 
+				. $filename . $extension);
+		binmode GD;
 		print GD ${ $output_file_ref }->png;
+		close GD;
 	}
 	elsif ($extension eq ".gif")
 	{
 		# TODO: Get transparency to work in gifs.
+		open(GD, ">output/" . $filename . $extension)
+			or die("Could not open file: output/" 
+				. $filename . $extension);
+		binmode GD;
 		print GD ${ $output_file_ref }->gif;
+		close GD;
 	}
-	close GD;
+	else
+	{
+		die("No valid image format specified. Supported formats:"
+			. " jpeg, png, gif.");
+	}
 }
 
 
