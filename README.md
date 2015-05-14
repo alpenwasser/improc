@@ -99,20 +99,20 @@ Examples
 Take all png, jpeg|jpg and gif files in `input_directory` and convert them
 to jpeg files of width 600 pixels, overlaid with `logo_file.png`:
 
-> improc --file input_directory --logo logo_file.png -output_format jpeg -w 600
+> `improc --file input_directory --logo logo_file.png -output_format jpeg -w 600`
 
 or:
 
-> improc -f input_directory -l logo_file.png -of jpeg -w 600
+> `improc -f input_directory -l logo_file.png -of jpeg -w 600`
 
 Convert one jpeg  input file to a  jpeg output file, trimming 33%  off the top
 and making the  target image 600px high. Note that trimming  does not decrease
 the output file's height, as mentioned above.
 
-> improc -f input_file.png -t 0.33 0 0 0 -of 600
+> `improc -f input_file.png -t 0.33 0 0 0 -of 600`
 
 This will produce an  error because too much has been trimmed  off the top and
-bottom (*0.4  + 0.7 =  1.1*, should  be smaller than  1). Horizontal direction
+bottom (`0.4  + 0.7 =  1.1`, should  be smaller than  1). Horizontal direction
 sums up to 0.5, which is fine.
 
 > `improc -f file.png -t 0.4 0.2 0.7 0.3`
