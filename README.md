@@ -99,7 +99,7 @@ Examples
 Take all png, jpeg|jpg and gif files in `input_directory` and convert them
 to jpeg files of width 600 pixels, overlaid with `logo_file.png`:
 
-> `improc --file input_directory --logo logo_file.png -output_format jpeg -w 600`
+> `improc --file input_directory --logo logo_file.png -output_format jpeg --width 600`
 
 or:
 
