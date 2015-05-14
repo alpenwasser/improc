@@ -94,11 +94,11 @@ sub validate_trim_factors
 
         # Make  sure we  don't try  to trim  away more  than
         # there actually is.
-	if (${ $trim_ref }[0] + ${ $trim_ref }[2] > 1)
+	if (${ $trim_ref }[0] + ${ $trim_ref }[2] >= 1)
 	{
 		die("Trim values in X-Direction exceed image width.");
 	}
-	elsif (${ $trim_ref }[1] + ${ $trim_ref }[3] > 1)
+	elsif (${ $trim_ref }[1] + ${ $trim_ref }[3] >= 1)
 	{
 		die("Trim values in Y-Direction exceed image height.");
 	}
