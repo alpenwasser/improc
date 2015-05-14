@@ -36,7 +36,7 @@ Input Flags
     Will default to width of input file.
 - `--height|-h   <pixel   count>`: Pixel   count  for   height   of   output
     files. Optional. Will default to height of input file.
-- `--files|-f  <files|directory>`: list of  filenames or a directory  of input
+- `--files|-f  <files|directory>`: List of  filenames or a directory  of input
     images to process.
 -  `--trim|-t <top>  <right> <bottom>  <left>`: Trim factors  for top,  right,
     bottom and left side. Must be numbers  between 0 and 1. Note that opposing
@@ -65,7 +65,7 @@ Since  a 4:3  image is  taller in  relation  to its  width than  a 3:2  image,
 trimming off trom top and/or bottom is required, approximately 11.11% in total
 to be specific.  So, an example could look like this:
 
-> improc -f <input file> --trim 0.0555 0 0.0555 0
+> `improc -f <input file> --trim 0.0555 0 0.0555 0`
 
 This will  trim 5.55%  off the top  and bottom, respectively,  for a  total of
 approximately 11.11%. Adjust  numbers accordingly if  you do not wish  to trim
@@ -77,11 +77,11 @@ symmetrically, of course.
 Going from 3:2 to 4:3, we need to trim approximately 10.96% in width instead
 of height. So a symmetrical trim would look like this:
 
-> improc -f <input file> --trim 0 0.0548 0 0.0548
+> `improc -f <input file> --trim 0 0.0548 0 0.0548`
 
 ### Trimming and Output File Dimensions
 
-The  output file  dimensions will  be appliet  *after* the  trimming has  been
+The  output file  dimensions will  be appliet **after** the  trimming has  been
 done. So  the output  file dimensions will indeed be what  has been specified,
 unaffected by the trimming.
 
@@ -99,11 +99,11 @@ Examples
 Take all png, jpeg|jpg and gif files in `input_directory` and convert them
 to jpeg files of width 600 pixels, overlaid with `logo_file.png`:
 
-> improc --file input\_directory --logo logo\_file.png -output\_format jpeg -w 600
+> improc --file input_directory --logo logo_file.png -output_format jpeg -w 600
 
 or:
 
-> improc -f input\_directory -l logo\_file.png -of jpeg -w 600
+> improc -f input_directory -l logo_file.png -of jpeg -w 600
 
 Convert one jpeg  input file to a  jpeg output file, trimming 33%  off the top
 and making the  target image 600px high. Note that trimming  does not decrease
@@ -111,15 +111,20 @@ the output file's height, as mentioned above.
 
 > improc -f input_file.png -t 0.33 0 0 0 -of 600
 
+This will produce an  error because too much has been trimmed  off the top and
+bottom (*0.4  + 0.7 =  1.1*, should  be smaller than  1). Horizontal direction
+sums up to 0.5, which is fine.
+
+> `improc -f file.png -t 0.4 0.2 0.7 0.3`
 
 Issues
 ------
 
-- When a log  with transparent areas is used, the edges  between the solid and
+- When  a logo with transparent areas is used, the edges between the solid and
     the transparent areas are sometimes rather ugly in the output file. I have
     so far been unable to fix this, and suspect it is a GD limitation (if that
     is incorrect and somebody knows a way  to fix this, feel free to notify me
     or do it yourself).
 
-- When resizing portrait images, the logo will be placed in the incorrect
+- When  resizing portrait  images, the  logo will be  placed in  the incorrect
     corner of the image (top right).
