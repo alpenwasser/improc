@@ -84,7 +84,7 @@ of height. So a symmetrical trim would look like this:
 
 ### Trimming and Output File Dimensions
 
-The  output file  dimensions will  be appliet **after** the  trimming has  been
+The  output file  dimensions will  be applied **after** the  trimming has  been
 done. So  the output  file dimensions will indeed be what  has been specified,
 unaffected by the trimming.
 
