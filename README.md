@@ -109,13 +109,20 @@ Convert one jpeg  input file to a  jpeg output file, trimming 33%  off the top
 and making the  target image 600px high. Note that trimming  does not decrease
 the output file's height, as mentioned above.
 
-> `improc -f input_file.png -t 0.33 0 0 0 -of 600`
+> `improc -f input_file.png -t 0.33 0 0 0 -h 600`
 
-This will produce an  error because too much has been trimmed  off the top and
-bottom (`0.4  + 0.7 =  1.1`, should  be smaller than  1). Horizontal direction
-sums up to 0.5, which is fine.
+One  can also  trim without  specifying target  dimensions, in  that case  the
+resulting  image will  have  dimensions corresponding  to  the source  image's
+dimensions minus the trimmed areas:
+
+> `improc -f input_file.png -t 0.2 0 0.2 0`
+
+The following will produce an error because  too much has been trimmed off the
+top  and bottom  (`0.4 +  0.7 =  1.1`, should  be smaller  than 1). Horizontal
+direction sums up to 0.5, which is fine.
 
 > `improc -f file.png -t 0.4 0.2 0.7 0.3`
+
 
 Issues
 ------
