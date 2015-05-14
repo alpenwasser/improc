@@ -1,7 +1,7 @@
 improc - Perl Bulk Image Processing Script
 ==========================================
 
-Overlay a logo into an image. And a few other things.
+Overlay a logo onto an image. And a few other things.
 
 
 Capabilities
